@@ -1,0 +1,13 @@
+steps:
+ # Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/{gcp_project_name}/github.com/{github_repo}/{github_project}:$COMMIT_SHA', '.']
+ # Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/{gcp_project_name}/github.com/{github_repo}/{github_project}:$COMMIT_SHA']
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'auth', '--image', 'gcr.io/{gcp_project_name}/github.com/{github_repo}/{github_project}:$COMMIT_SHA', '--region', 'us-central1']
+images:
+- gcr.io/{gcp_project_name}/github.com/{github_repo}/{github_project}:$COMMIT_SHA

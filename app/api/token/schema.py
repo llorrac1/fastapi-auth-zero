@@ -6,7 +6,15 @@ from enum import Enum
 from ...api.schema import BaseSchema
 
 
-class PublicAuthTokenSchema(BaseSchema):
+class AuthTokenSchema(BaseSchema):
+    client_id: str
+    client_secret: str
+    audience: str = "api"
+    grant_type: str = "client_credentials"
+    expires: int
+
+
+class PublicAuthTokenRequestSchema(BaseSchema):
     client_id: str
     client_secret: str
 
